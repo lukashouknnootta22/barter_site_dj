@@ -1,0 +1,31 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Объявление №{{ ad.id }}{% endblock %}
+
+{% block header %}Объявление: {{ ad.title }}{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h3>{{ ad.title }}</h3>
+        <p><strong>Описание:</strong> {{ ad.description }}</p>
+        {% if ad.image_url %}
+            <img src="{{ ad.image_url }}" alt="Изображение товара" style="max-width: 100%; height: auto; border-radius: 8px;">
+        {% endif %}
+        <p><strong>Категория:</strong> {{ ad.get_category_display }}</p>
+        <p><strong>Состояние:</strong> {{ ad.get_condition_display }}</p>
+        <p><strong>Дата публикации:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+        <p><strong>Автор:</strong> {{ ad.user.username }}</p>
+        {% if request.user == ad.user %}
+            <a href="{% url 'edit_ad' ad.id %}" style="display: inline-block; background-color: #008CBA; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Редактировать</a>
+            <button onclick="confirmDelete()" style="background-color: #f44336; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">Удалить объявление</button>
+        {% endif %}
+    </div>
+
+    <script>
+        function confirmDelete() {
+            if (confirm("Вы уверены, что хотите удалить это объявление?")) {
+                window.location.href = "{% url 'delete_ad' ad.id %}";
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Объявления{% endblock %}
+
+{% block header %}Список объявлений{% endblock %}
+
+{% block content %}
+    <!-- Кнопка для создания нового объявления -->
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'create_ad' %}" style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Создать объявление</a>
+    </div>
+
+    <!-- Форма поиска и фильтрации -->
+    <div class="form-block">
+        <h2>Поиск и фильтрация</h2>
+        <form method="get">
+            <input type="text" name="q" placeholder="Поиск..." value="{{ query }}">
+            <select name="category">
+                <option value="">Все категории</option>
+                {% for key, value in CATEGORY_CHOICES %}
+                    <option value="{{ key }}" {% if category == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+            <select name="condition">
+                <option value="">Все состояния</option>
+                {% for key, value in CONDITION_CHOICES %}
+                    <option value="{{ key }}" {% if condition == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Применить</button>
+        </form>
+    </div>
+
+    <!-- Список объявлений -->
+    {% if page_obj %}
+        {% for ad in page_obj %}
+            <div class="card">
+                <h3><a href="{% url 'show_ad' ad.id %}">{{ ad.title }}</a></h3>
+                <p><strong>Описание:</strong> {{ ad.description|truncatechars:100 }}</p>
+                {% if ad.image_url %}
+                    <img src="{{ ad.image_url }}" alt="Изображение товара" style="max-width: 100%; height: auto; border-radius: 8px;">
+                {% endif %}
+                <p><strong>Категория:</strong> {{ ad.get_category_display }}</p>
+                <p><strong>Состояние:</strong> {{ ad.get_condition_display }}</p>
+                <p><strong>Дата публикации:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+                <p><strong>Автор:</strong> {{ ad.user.username }}</p>
+                {% if request.user != ad.user %}
+                    <a href="{% url 'create_exchange_proposal' ad.id %}" style="display: inline-block; background-color: #008CBA; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Предложить обмен</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Объявлений не найдено.</p>
+    {% endif %}
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&q={{ query }}&category={{ category }}&condition={{ condition }}">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&category={{ category }}&condition={{ condition }}">Назад</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&q={{ query }}&category={{ category }}&condition={{ condition }}">Вперед</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}&category={{ category }}&condition={{ condition }}">Последняя</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

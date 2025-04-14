@@ -1,0 +1,26 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block header %}
+    {% if user.is_authenticated %}
+        Добро пожаловать, {{ user.username }}!
+    {% else %}
+        Добро пожаловать на главную страницу
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h2>Последние новости</h2>
+        {% for news in latest_news %}
+            <div style="margin-bottom: 15px;">
+                <h3>{{ news.title }}</h3>
+                <p>{{ news.content|truncatechars:200 }}</p>
+                <small>Опубликовано: {{ news.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+        {% empty %}
+            <p>Новостей пока нет.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Добавить объявление{% endblock %}
+
+{% block header %}Добавить новое объявление{% endblock %}
+
+{% block content %}
+    <div class="form-block">
+        <h2>Создать объявление</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Опубликовать объявление</button>
+        </form>
+    </div>
+{% endblock %}

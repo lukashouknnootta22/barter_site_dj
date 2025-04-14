@@ -1,0 +1,21 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block header %}Редактирование профиля{% endblock %}
+
+{% block content %}
+    <div class="form-block">
+        <h2>Редактировать профиль</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Сохранить изменения</button>
+        </form>
+
+        <!-- Кнопка удаления аккаунта -->
+        <div style="margin-top: 20px;">
+            <a href="{% url 'delete_account' %}" style="display: inline-block; background-color: #f44336; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Удалить аккаунт</a>
+        </div>
+    </div>
+{% endblock %}

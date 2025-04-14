@@ -1,0 +1,30 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Редактирование предложения обмена{% endblock %}
+
+{% block header %}Редактирование предложения обмена{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <h3>Детали предложения</h3>
+        <p><strong>Отправитель:</strong> {{ proposal.ad_sender.user.username }}</p>
+        <p><strong>Получатель:</strong> {{ proposal.ad_receiver.user.username }}</p>
+        <p><strong>Комментарий:</strong> {{ proposal.comment }}</p>
+        <p><strong>Статус:</strong> {{ proposal.get_status_display }}</p>
+        <p><strong>Дата создания:</strong> {{ proposal.created_at|date:"d.m.Y H:i" }}</p>
+
+        <!-- Форма изменения статуса -->
+        {% if proposal.ad_receiver.user == request.user %}
+            <form method="post">
+                {% csrf_token %}
+                <label for="status">Изменить статус:</label>
+                <select name="status">
+                    <option value="W" {% if proposal.status == 'W' %}selected{% endif %}>Ожидает</option>
+                    <option value="G" {% if proposal.status == 'G' %}selected{% endif %}>Принята</option>
+                    <option value="R" {% if proposal.status == 'R' %}selected{% endif %}>Отклонена</option>
+                </select>
+                <button type="submit">Сохранить</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

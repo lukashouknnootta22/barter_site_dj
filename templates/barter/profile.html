@@ -1,0 +1,37 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block header %}Профиль пользователя{% endblock %}
+
+{% block content %}
+    <!-- Информация о пользователе -->
+    <div class="card">
+        <h2>Профиль пользователя</h2>
+        <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Имя:</strong> {{ user.first_name }}</p>
+        <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
+        <a href="{% url 'edit_profile' %}" style="display: inline-block; background-color: #4CAF50; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Редактировать профиль</a>
+    </div>
+
+    <!-- Список объявлений пользователя -->
+    <div class="card">
+        <h2>Мои объявления</h2>
+        {% if user_ads %}
+            <ul>
+                {% for ad in user_ads %}
+                    <li><a href="{% url 'show_ad' ad.id %}">{{ ad.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>У вас пока нет объявлений.</p>
+        {% endif %}
+    </div>
+
+    <!-- Ссылка на список предложений обмена -->
+    <div class="card">
+        <h2>Мои предложения обмена</h2>
+        <p><a href="{% url 'list_exchange_proposals' %}">Перейти к списку предложений обмена</a></p>
+    </div>
+{% endblock %}

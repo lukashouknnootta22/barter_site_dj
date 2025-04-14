@@ -1,0 +1,33 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Создать предложение обмена{% endblock %}
+
+{% block header %}Создать предложение обмена{% endblock %}
+
+{% block content %}
+    <div class="form-block">
+        <h2>Предложение обмена</h2>
+
+        {% if user_ads %}
+            <p>Вы хотите предложить обмен на объявление: <strong>{{ ad_receiver.title }}</strong>.</p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="ad_receiver" value="{{ ad_receiver.id }}">
+
+                <p>Выберите свое объявление для обмена:</p>
+                <select name="ad_sender">
+                    {% for ad in user_ads %}
+                        <option value="{{ ad.id }}">{{ ad.title }}</option>
+                    {% endfor %}
+                </select>
+
+                <p>Добавьте комментарий (необязательно):</p>
+                <textarea name="comment" rows="4" cols="50"></textarea>
+
+                <button type="submit">Отправить предложение</button>
+            </form>
+        {% else %}
+            <p>У вас нет объявлений для обмена. <a href="{% url 'create_ad' %}">Создайте объявление</a>.</p>
+        {% endif %}
+    </div>
+{% endblock %}

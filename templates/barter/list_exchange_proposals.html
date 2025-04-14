@@ -1,0 +1,47 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Список предложений обмена{% endblock %}
+
+{% block header %}Список предложений обмена{% endblock %}
+
+{% block content %}
+    <!-- Форма фильтрации -->
+    <div class="form-block">
+        <h3>Фильтрация</h3>
+        <form method="get">
+            <label for="sender_username">Отправитель:</label>
+            <input type="text" name="sender_username" placeholder="Username отправителя">
+
+            <label for="receiver_username">Получатель:</label>
+            <input type="text" name="receiver_username" placeholder="Username получателя">
+
+            <label for="status">Статус:</label>
+            <select name="status">
+                <option value="">Все статусы</option>
+                <option value="W">Ожидает</option>
+                <option value="G">Принята</option>
+                <option value="R">Отклонена</option>
+            </select>
+
+            <button type="submit">Применить фильтры</button>
+        </form>
+    </div>
+
+    <!-- Список предложений -->
+    {% if proposals %}
+        {% for proposal in proposals %}
+            <div class="card">
+                <p><strong>Отправитель:</strong> {{ proposal.ad_sender.user.username }}</p>
+                <p><strong>Получатель:</strong> {{ proposal.ad_receiver.user.username }}</p>
+                <p><strong>Комментарий:</strong> {{ proposal.comment }}</p>
+                <p><strong>Статус:</strong> {{ proposal.get_status_display }}</p>
+                <p><strong>Дата создания:</strong> {{ proposal.created_at|date:"d.m.Y H:i" }}</p>
+                {% if proposal.ad_receiver.user == request.user %}
+                    <a href="{% url 'update_exchange_proposal' proposal.id %}">Изменить статус</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Предложений обмена не найдено.</p>
+    {% endif %}
+{% endblock %}

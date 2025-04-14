@@ -1,0 +1,16 @@
+{% extends 'barter/base.html' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block header %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="form-block">
+        <h2>Войти</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+{% endblock %}
