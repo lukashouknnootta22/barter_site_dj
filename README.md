@@ -2,10 +2,7 @@
 
 ### Требования
 
-Python 3.8 или выше
-Django 4.x
-SQLite (возможна модернизация для работы с PostgreSQL
-virtualenv
+Python 3.8 или выше, Django 4.x, SQLite (возможна модернизация для работы с PostgreSQL), virtualenv
 
 ### Установка
 1) Введите в терминале: git clone https://github.com/lukashouknnootta22/barter_site_dj.git
