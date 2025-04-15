@@ -9,9 +9,6 @@ from .forms import AdForm, SignUpForm, UserProfileForm, ExchangeProposalForm
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.forms import AuthenticationForm
-import logging
-
-logger = logging.getLogger(__name__)
 
 @require_http_methods(['GET'])
 def index(request):
